@@ -20,10 +20,15 @@ class TicTacToeBoard
   private:
   	Piece board[BOARDSIZE][BOARDSIZE];
   	Piece turn;
+  	
+  	bool inBounds(int row, int column);
 
   public:
   	//Constructor sets an empty board and specifies it is X's turn first
   	TicTacToeBoard();
+    
+    // Getter for turn	
+  	Piece getTurn();
 
     /**
      * Switches turn member variable to represent whether it's X's or O's turn

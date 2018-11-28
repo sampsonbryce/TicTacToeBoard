@@ -13,13 +13,31 @@ TicTacToeBoard::TicTacToeBoard()
       board[i][j] = Blank;
 }
 
+bool TicTacToeBoard::inBounds(int row, int column){
+  // if out of bounds
+  if(row < 0 || row >= BOARDSIZE || column < 0 || column >= BOARDSIZE){
+    return false;
+  }
+  return true;
+}
+
+Piece TicTacToeBoard::getTurn(){
+  return turn;
+}
+
 /**
  * Switches turn member variable to represent whether it's X's or O's turn
  * and returns whose turn it is
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
-  return Invalid;
+  if(turn == X){
+    turn = O;
+  }else if(turn == O){
+    turn = X;
+  }
+  
+  return turn;
 }
 
 /**
@@ -33,7 +51,27 @@ Piece TicTacToeBoard::toggleTurn()
 **/ 
 Piece TicTacToeBoard::placePiece(int row, int column)
 {
-  return Invalid;
+  
+  // check the bounds 
+  if(!inBounds(row, column)) {
+    return Invalid;
+  }
+  
+  
+  // if a piece has already been placed there 
+  if(board[row][column] != Blank){
+    return board[row][column];
+  }
+  
+  // place piece
+  Piece current_piece = turn;
+  board[row][column] = current_piece;
+  
+  // end turn 
+  toggleTurn();
+  
+  // return placed piece 
+  return current_piece;
 }
 
 /**
@@ -42,7 +80,14 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 **/
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
-  return Invalid;
+  
+  // check bounds 
+  if(!inBounds(row, column)){
+    return Invalid;
+  }
+  
+  // return piece 
+  return board[row][column];
 }
 
 /**
