@@ -1,4 +1,6 @@
 #include "TicTacToeBoard.h"
+#include<iostream>
+using namespace std;
 /**
  * Class for representing a 3x3 Tic-Tac-Toe game board, using the Piece enum
  * to represent the spaces on the board.
@@ -31,9 +33,12 @@ Piece TicTacToeBoard::getTurn(){
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
+  // if X make turn O
   if(turn == X){
     turn = O;
-  }else if(turn == O){
+    
+  // if O make turn X
+  }else{
     turn = X;
   }
   
@@ -90,11 +95,118 @@ Piece TicTacToeBoard::getPiece(int row, int column)
   return board[row][column];
 }
 
+void TicTacToeBoard::print(){
+  cout << "PRINTING BOARD" << endl;
+  for(int row = 0; row < BOARDSIZE; row++){
+    for(int column = 0; column < BOARDSIZE; column++){
+      Piece piece = board[row][column];
+      if(piece == Blank){
+        cout << ". ";
+      }else{
+        cout << piece << " ";
+      }
+    }
+    cout << endl;
+  }
+  cout << "END PRINTING BOARD" << endl;
+}
+
 /**
  * Returns which Piece has won, if there is a winner, Invalid if the game
  * is not over, or Blank if the board is filled and no one has won.
 **/
 Piece TicTacToeBoard::getWinner()
 {
+  Piece first_piece;
+  bool failed_check = false;
+  
+  // check rows
+  for(int row = 0; row < BOARDSIZE; row++){
+    failed_check = false;
+    first_piece = board[row][0];
+    
+    // continue if there isn't an actual player in the start spot
+    if(first_piece != X && first_piece != O){
+      continue;
+    }
+    
+    for(int column = 1; column < BOARDSIZE; column++){
+      if(board[row][column] != first_piece) {
+        failed_check = true;
+        break;
+      }
+    }
+    
+    // if we made it here without failing, we found the winner 
+    if(!failed_check){
+      return first_piece;
+    }
+  }
+  
+  // check columns
+  for(int column = 0; column < BOARDSIZE; column++){
+    failed_check = false;
+    first_piece = board[0][column];
+    
+    // continue if there isn't an actual player in the start spot
+    if(first_piece != X && first_piece != O){
+      continue;
+    }
+    for(int row = 1; row < BOARDSIZE; row++){
+      if(board[row][column] != first_piece) {
+        failed_check = true;
+        break;
+      }
+    }
+    
+    // if we made it here without failing, we found the winner 
+    if(!failed_check){
+      return first_piece;
+    }
+  }
+  
+  // check diagonals 
+  int row = 1;
+  int column = 1;
+  first_piece = board[0][0];
+  failed_check = false;
+ 
+  // only loop in the starting piece is an actual player 
+  if(first_piece == X || first_piece == O){
+    while(row < BOARDSIZE && column < BOARDSIZE){
+      if(board[row][column] != first_piece){
+        failed_check = true;
+        break;
+      }
+      row++;
+      column++;
+    }
+    
+    if(!failed_check){
+      return first_piece;
+    }
+  }
+  
+  // check other diagonal 
+  failed_check = false;
+  row = 1;
+  column = BOARDSIZE - 2;
+  first_piece = board[0][BOARDSIZE - 1];
+  // only loop in the starting piece is an actual player 
+  if(first_piece == X || first_piece == O){
+    while(row < BOARDSIZE && column > 0){
+      if(board[row][column] != first_piece){
+        first_piece = Invalid;
+        break;
+      }
+      row++;
+      column--;
+    }
+    
+    if(!failed_check){
+      return first_piece;
+    }
+  }
+  
   return Invalid;
 }

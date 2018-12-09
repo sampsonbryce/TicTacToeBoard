@@ -52,6 +52,8 @@ class TicTacToeBoard
   	 * are no pieces there, or Invalid if the coordinates are out of bounds
   	**/
   	Piece getPiece(int row, int column);
+  	
+  	void print();
 
   	/**
   	 * Returns which Piece has won, if there is a winner, Invalid if the game

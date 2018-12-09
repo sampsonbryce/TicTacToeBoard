@@ -86,3 +86,70 @@ TEST(TicTacToeBoardTest, placePiece)
 	
 	delete board;
 }
+
+
+TEST(TicTacToeBoardTest, no_winner)
+{
+	TicTacToeBoard * board = new TicTacToeBoard();	
+	ASSERT_EQ(board->getWinner(), Invalid);
+	
+	delete board;
+}
+
+
+TEST(TicTacToeBoardTest, winner)
+{
+	TicTacToeBoard * board = new TicTacToeBoard();	
+	
+	// check first diagonal win condition	
+	board->placePiece(0,0); // X
+	board->placePiece(1,2); // O
+	board->placePiece(1,1); // X
+	board->placePiece(2,1); // O
+	board->placePiece(2,2); // X
+	
+	ASSERT_EQ(board->getWinner(), X);
+	
+	delete board;
+	
+	// check second diagonal win condition	
+	board = new TicTacToeBoard();
+	board->placePiece(0,2); // X
+	board->placePiece(1,2); // O
+	board->placePiece(1,1); // X
+	board->placePiece(2,1); // O
+	board->placePiece(2,0); // X
+	
+	ASSERT_EQ(board->getWinner(), X);
+	
+	delete board;
+	
+	// check row win
+	board = new TicTacToeBoard();
+	// . . X
+	// O O O
+	// X X .
+	board->placePiece(0,2); // X
+	board->placePiece(1,0); // O
+	board->placePiece(2,1); // X
+	board->placePiece(1,1); // O
+	board->placePiece(2,0); // X
+	board->placePiece(1,2); // O
+	
+	ASSERT_EQ(board->getWinner(), O);
+	
+	delete board;
+	
+	// check column win
+	board = new TicTacToeBoard();
+	board->placePiece(0,1); // X
+	board->placePiece(0,2); // O
+	board->placePiece(1,1); // X
+	board->placePiece(1,2); // O
+	board->placePiece(2,0); // X
+	board->placePiece(2,2); // O
+	
+	ASSERT_EQ(board->getWinner(), O);
+	
+	delete board;
+}
